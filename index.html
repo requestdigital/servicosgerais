@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0062ff">
+    <title>Serviços Gerais | Pro Mobile</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0062ff;
+            --secondary: #00d95f;
+            --dark: #0f172a;
+            /* Escureci de #f8fafc para #f1f5f9 para dar contraste na gravação */
+            --light-bg: #f1f5f9; 
+            --white: #ffffff;
+            --text: #334155;
+            --transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light-bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; letter-spacing: -0.5px; }
+
+        /* --- ANIMAÇÃO REFINADA --- */
+        /* --- AJUSTE PARA GRAVAÇÃO RÁPIDA --- */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(30px); /* Distância menor = chega mais rápido no lugar */
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            will-change: transform, opacity;
+        }
+
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        /* Ajuste da Engrenagem para ficar menor */
+        .gear-mini {
+            position: relative; 
+            width: 35px; 
+            height: 35px; 
+            background: var(--primary);
+            border-radius: 50%; 
+            animation: spin 6s linear infinite; 
+            margin: 0 auto 20px;
+        }
+        .tooth-mini { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            width: 45px; 
+            height: 8px; 
+            background: var(--primary); 
+            transform: translate(-50%, -50%); 
+        }
+        /* Menu */
+        .menu {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(255, 255, 255, 0.9); display: flex;
+            align-items: center; justify-content: space-between;
+            padding: 0 20px; z-index: 1000; backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .logo a { text-decoration: none; font-weight: 800; font-size: 1.3rem; }
+        .logo .verde { color: var(--secondary); }
+        .logo .azul { color: var(--primary); }
+
+        /* Banner Inicial (Estilo Robusto de Antes) */
+        .hero {
+            margin-top: 70px; height: 85vh; position: relative;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; overflow: hidden;
+            background-color: #000;
+        }
+        .hero img {
+            position: absolute; width: 100%; height: 100%;
+            object-fit: cover; z-index: 1; filter: brightness(0.4);
+        }
+        .hero-content { position: relative; z-index: 2; padding: 25px; }
+        .hero-content h1 { font-size: 2.8rem; line-height: 1.1; margin-bottom: 10px; }
+        .hero-content h2 { font-size: 1.5rem; color: var(--secondary); margin-bottom: 15px; }
+        .badge { background: var(--secondary); color: var(--dark); padding: 5px 15px; border-radius: 50px; font-weight: 800; font-size: 0.8rem; display: inline-block; }
+
+        /* Mini Engrenagem Discreta */
+        .gear-mini::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 15px; height: 15px; background: var(--light-bg); border-radius: 50%; z-index: 5; }
+        .t2 { transform: translate(-50%, -50%) rotate(45deg); }
+        .t3 { transform: translate(-50%, -50%) rotate(90deg); }
+        .t4 { transform: translate(-50%, -50%) rotate(135deg); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Seções */
+        section { 
+            padding: 80px 20px; 
+            border-top: 1px solid rgba(0,0,0,0.03); 
+        }
+
+        /* Destaque maior para a seção cinza */
+        section[style*="background: #f1f5f9"] {
+            background-color: #e2e8f0 !important; /* Um tom mais escuro para o vídeo pegar */
+        }
+        h2 { text-align: center; font-size: 1.8rem; margin-bottom: 30px; color: var(--dark); }
+
+        /* Cards Serviços */
+        .grid { display: grid; gap: 20px; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .card img { width: 100%; height: 160px; object-fit: cover; }
+        .card-body { padding: 20px; }
+
+        /* Passo a Passo (Novo Conteúdo) */
+        .steps { background: var(--dark); color: white; }
+        .step-item { margin-bottom: 30px; display: flex; gap: 15px; }
+        .step-num { min-width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+
+        /* Comentários */
+        .comentario { background: white; padding: 25px; border-radius: 20px; margin-bottom: 15px; border-left: 5px solid var(--secondary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        /* FAQ (Abertos) */
+        .faq-item { background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .faq-item h4 { color: var(--primary); margin-bottom: 8px; font-size: 1.1rem; }
+
+        /* Formulário Melhorado */
+        .form-box { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .input-wrap { position: relative; margin-bottom: 15px; }
+        .input-wrap i { position: absolute; left: 15px; top: 17px; color: var(--primary); }
+        .input-wrap input, .input-wrap select, .input-wrap textarea {
+            width: 100%; padding: 15px 15px 15px 45px; border-radius: 12px; border: 2px solid #f1f5f9; background: #f8fafc; outline: none; font-size: 1rem;
+        }
+        .input-wrap input:focus { border-color: var(--primary); background: white; }
+
+        .btn { background: var(--primary); color: white; padding: 18px; border-radius: 15px; font-weight: 700; border: none; width: 100%; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+        .btn:active { transform: scale(0.95); }
+
+        .wa-link {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #25d366; /* Verde oficial do WhatsApp */
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px; /* Tamanho do ícone */
+            text-decoration: none;
+            z-index: 9999; /* Garante que fique na frente de TUDO, inclusive do rodapé */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .wa-link:active {
+            transform: scale(0.9);
+        }
+
+        /* Garante que o ícone interno seja branco e centralizado */
+        .wa-link i {
+            color: white !important;
+        }
+
+        .card, .comentario, .faq-item, .form-box { 
+            background: var(--white); 
+            border: 1px solid #d1d5db !important; /* Borda mais visível */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="menu">
+        <div class="logo">
+            <a href="#"><span class="verde">Serviços</span><span class="azul">Gerais</span></a>
+        </div>
+        <div style="color: var(--primary);"><i class="fa-solid fa-bars-staggered fa-lg"></i></div>
+    </nav>
+
+    <header class="hero">
+        <img src="img/fullbanner.webp" alt="Manutenção Profissional">
+        <div class="hero-content">
+            <h1 class="reveal">Serviços Gerais</h1>
+            <h2 class="reveal">(14) 99999-9999</h2>
+            <p class="reveal" style="margin-bottom: 20px; font-weight: 500;">Soluções completas com rapidez, eficiência e qualidade comprovada.</p>
+            <div class="badge reveal">ATENDIMENTO 24 HORAS</div>
+        </div>
+    </header>
+
+    <section id="servicos">
+        <div class="gear-mini">
+            <div class="tooth-mini t1"></div><div class="tooth-mini t2"></div>
+            <div class="tooth-mini t3"></div><div class="tooth-mini t4"></div>
+        </div>
+        <h2>NOSSOS SERVIÇOS</h2>
+        <div class="grid">
+            <div class="card reveal">
+                <img src="img/img5.webp" alt="Serviço">
+                <div class="card-body">
+                    <h3>Limpeza Técnica</h3>
+                    <p>Caixas d'água e reservatórios com higienização total.</p>
+                </div>
+            </div>
+            <div class="card reveal">
+                <img src="img/img1.webp" alt="Serviço">
+                <div class="card-body">
+                    <h3>Caça Vazamentos</h3>
+                    <p>Equipamentos digitais para localizar sem quebrar paredes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="steps">
+        <h2 style="color: white;">COMO FUNCIONA?</h2>
+        <div class="reveal">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div>
+                    <h4>Contato</h4>
+                    <p>Você nos liga ou manda WhatsApp relatando o problema.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div>
+                    <h4>Visita Técnica</h4>
+                    <p>Enviamos um especialista para avaliar e dar o orçamento.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">3</div>
+                <div>
+                    <h4>Execução</h4>
+                    <p>Realizamos o serviço com limpeza e organização total.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>DEPOIMENTOS</h2>
+        <div class="reveal">
+            <div class="comentario">
+                <p>"Técnicos nota 10! Chegaram no horário e resolveram o problema de entupimento na hora."</p>
+                <small><strong>- Marcos Oliveira</strong></small>
+            </div>
+            <div class="comentario">
+                <p>"Preço justo e serviço muito limpo. Recomendo para quem tem pressa e quer qualidade."</p>
+                <small><strong>- Juliana Costa</strong></small>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #f1f5f9;">
+        <h2>DÚVIDAS COMUNS</h2>
+        <div class="reveal">
+            <div class="faq-item">
+                <h4>Vocês atendem aos sábados e domingos?</h4>
+                <p>Sim! Nossa equipe de plantão funciona 24h por dia para emergências em toda a região.</p>
+            </div>
+            <div class="faq-item">
+                <h4>O orçamento é cobrado?</h4>
+                <p>Não cobramos taxa de visita em horário comercial. O orçamento é feito sem compromisso.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Quais as formas de pagamento?</h4>
+                <p>Aceitamos PIX, cartões de débito e crédito (parcelamos sua manutenção).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato">
+        <h2>SOLICITAR VISITA</h2>
+        <div class="form-box reveal">
+            <form>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" placeholder="Nome Completo" required>
+                </div>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-whatsapp"></i>
+                    <input type="tel" placeholder="Seu WhatsApp" required>
+                </div>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <select required>
+                        <option value="">Selecione o Serviço</option>
+                        <option>Vazamento</option>
+                        <option>Entupimento</option>
+                        <option>Limpeza de Caixa</option>
+                        <option>Outros</option>
+                    </select>
+                </div>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-message" style="top: 20px;"></i>
+                    <textarea placeholder="Conte brevemente o problema..." rows="3" style="padding-left: 45px;"></textarea>
+                </div>
+                <button type="submit" class="btn">ENVIAR AGORA</button>
+            </form>
+        </div>
+    </section>
+
+    <footer style="background: var(--dark); color: white; padding: 80px 20px; text-align: center;">
+        <div class="logo" style="margin-bottom: 15px;">
+            <a href="#"><span class="verde">Serviços</span><span class="azul" style="color: white;">Gerais</span></a>
+        </div>
+        <p style="font-size: 0.9rem; opacity: 0.7;">Rua das Flores, 123 - Marília/SP<br>Atendimento 24h em toda a região.</p>
+    </footer>
+
+    <a href="https://wa.me/5514999999999" class="wa-link" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script>
+        const observerOptions = {
+            root: null,
+            // O segredo está aqui: '200px' positivo faz o site "enxergar" 
+            // o item antes mesmo de ele aparecer na tela. 
+            // Quando ele apontar na base, a animação já estará na metade!
+            rootMargin: '0px 0px 200px 0px', 
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Removemos o delay para ser instantâneo
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Força a exibição imediata de tudo que estiver perto da tela ao carregar
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.reveal:not(.active)').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight + 100) {
+                    el.classList.add('active');
+                }
+            });
+        }, { passive: true });
+    </script>
+</body>
+</html>
